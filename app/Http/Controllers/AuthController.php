@@ -25,10 +25,12 @@ class AuthController extends Controller
         ], [
             'email.required' => 'El campo correo es obligatorio.',
             'email.email' => 'El correo no tiene el formato correcto.',
+            'password.required' => 'El campo contraseña es obligatorio.',
+            
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+            return response()->json(['error' => $validator->errors() ], Response::HTTP_BAD_REQUEST);
         }
 
         $credentials = request(['email', 'password']);
