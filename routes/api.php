@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SubsidiaryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -19,7 +20,11 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::resource('users', UserController::class);
+        Route::apiResource('subsidiaries', SubsidiaryController::class);
     });
+
+
 });
+
 
 Route::get('/', [AuthController::class, 'unauthorized'])->name('login');
