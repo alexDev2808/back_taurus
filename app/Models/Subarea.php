@@ -5,24 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Area extends Model
+class Subarea extends Model
 {
     use HasUuids;
 
     protected $fillable = [
         'name',
         'slug',
-        'subsidiary_id'
+        'description',
+        'area_id'
     ];
 
-    public function subsidiary()
+    public function area()
     {
-        return $this->belongsTo(Subsidiary::class);
+        return $this->belongsTo(Area::class);
     }
-
-    public function subareas()
-    {
-        return $this->hasMany(Subarea::class);
-    }
-
 }

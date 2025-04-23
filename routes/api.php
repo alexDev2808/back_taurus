@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AreaController;
+use App\Http\Controllers\Api\SubareaController;
 use App\Http\Controllers\Api\SubsidiaryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -24,6 +25,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('subsidiaries', SubsidiaryController::class);
         Route::get('subsidiaries/{subsidiary}/areas', [SubsidiaryController::class, 'areas']);
         Route::apiResource('areas', AreaController::class);
+        Route::get('areas/{area}/subareas', [AreaController::class, 'subareas']);
+        Route::apiResource('subareas', SubareaController::class);
+
     });
 
 

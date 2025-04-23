@@ -80,7 +80,13 @@ class AreaController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $area->update($request->all());
+        $data = $request->all();
+        if (isset($data['name'])) {
+            $data['slug'] = Str::slug($data['name'], '-');
+        }
+
+        $area->update($data);
+
         return response()->json($area, 200);
     }
 
@@ -105,6 +111,17 @@ class AreaController extends Controller
         $item = Area::where('id', $identifier)->orWhere('slug', $identifier)->first();
 
         return $item;
+    }
+
+    public function subareas(string $id)
+    {
+        $area = $this->findItem($id);
+
+        if (!$area) {
+            return response()->json(['message' => 'Area not found'], 404);
+        }
+
+        return response()->json($area->subareas, 200);
     }
 
 }
