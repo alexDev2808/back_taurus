@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subsidiaries', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name')->unique();
             $table->string('slug')->unique();
+
+            $table->uuid('subsidiary_id');
+            $table->foreign('subsidiary_id')
+                ->references('id')
+                ->on('subsidiaries')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -24,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subsidiaries');
+        Schema::dropIfExists('areas');
     }
 };

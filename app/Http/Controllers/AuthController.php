@@ -73,8 +73,7 @@ class AuthController extends Controller
                 'name' => htmlspecialchars($request->input('name')),
                 'email' => htmlspecialchars($request->input('email')),
                 'password' => Hash::make($request->input('password')),
-                'rol' => 'CLIENTE',
-                'empresa_id' => null,
+                'rol' => 'CLIENTE'
             ]);
 
             if (!$new) {
@@ -159,7 +158,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 120
         ], Response::HTTP_OK);
     }
 }

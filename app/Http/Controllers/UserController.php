@@ -15,8 +15,6 @@ class UserController extends Controller
         $user = auth()->user();
         if ($user->rol == 'ADMIN') {
             $users = User::orderBy('name', 'asc')->get();
-        } else {
-            $users = User::where('empresa_id', $user->empresa_id)->orderBy('name', 'asc')->get();
         }
 
         return response()->json($users);

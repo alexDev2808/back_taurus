@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Subsidiary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class SubsidiaryController extends Controller
 {
@@ -33,6 +34,7 @@ class SubsidiaryController extends Controller
 
         $subsidiary = Subsidiary::create([
             'name' => $request->name,
+            'slug' => Str::slug($request->name, '-'),
         ]);
         return response()->json($subsidiary, 201);
     }
@@ -88,4 +90,17 @@ class SubsidiaryController extends Controller
         $subsidiary->delete();
         return response()->json(['message' => 'Subsidiary deleted successfully'], 200);
     }
+
+
+    public function areas($identifier)
+    {
+        $subsidiary = Subsidiary::where('id', $identifier)->orWhere('slug', $identifier)->first();
+
+        if (!$subsidiary) {
+            return response()->json(['message' => 'Subsidiary not found'], 404);
+        }
+
+        return response()->json($subsidiary->areas, 200);
+    }
+
 }
