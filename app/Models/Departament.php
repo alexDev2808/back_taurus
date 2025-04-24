@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Subarea extends Model
+class Departament extends Model
 {
     use HasUuids;
 
@@ -13,16 +13,13 @@ class Subarea extends Model
         'name',
         'slug',
         'description',
-        'area_id'
+        'subarea_id',
     ];
 
-    public function area()
+
+    public function subarea()
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Subarea::class);
     }
 
-    public function departaments()
-    {
-        return $this->hasMany(Departament::class);
-    }
 }

@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Subarea;
+use App\Models\Departament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class SubareaController extends Controller
+class DepartamentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $subareas = Subarea::all();
-        return response()->json($subareas, 200);
+        $departaments = Departament::all();
+        return response()->json($departaments);
     }
 
     /**
@@ -25,25 +25,25 @@ class SubareaController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:80|unique:subareas,name',
+            'name' => 'required|string|max:80|unique:departaments,name',
             'description' => 'nullable|string|max:255',
-            'area_id' => 'required|exists:areas,id'
+            'subarea_id' => 'required|exists:subareas,id'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        $subarea = Subarea::create([
+        $departament = Departament::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name, '-'),
             'description' => $request->description,
-            'area_id' => $request->area_id
+            'subarea_id' => $request->subarea_id
         ]);
 
         return response()->json([
-            'message' => 'Subarea created successfully',
-            'subarea' => $subarea
+            'message' => 'Departament created successfully',
+            'departament' => $departament
         ], 201);
     }
 
@@ -52,13 +52,13 @@ class SubareaController extends Controller
      */
     public function show(string $id)
     {
-        $subarea = $this->findItem($id);
+        $departament = $this->findItem($id);
 
-        if (!$subarea) {
-            return response()->json(['message' => 'Subarea not found'], 404);
+        if (!$departament) {
+            return response()->json(['message' => 'Departament not found'], 404);
         }
 
-        return response()->json($subarea, 200);
+        return response()->json($departament, 200);
     }
 
     /**
@@ -66,16 +66,16 @@ class SubareaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $subarea = $this->findItem($id);
+        $departament = $this->findItem($id);
 
-        if (!$subarea) {
-            return response()->json(['message' => 'Subarea not found'], 404);
+        if (!$departament) {
+            return response()->json(['message' => 'Departament not found'], 404);
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|required|string|max:80|unique:subareas,name,' . $subarea->id,
+            'name' => 'sometimes|required|string|max:80|unique:departaments,name,' . $departament->id,
             'description' => 'nullable|string|max:255',
-            'area_id' => 'sometimes|required|exists:areas,id'
+            'subarea_id' => 'sometimes|required|exists:subareas,id'
         ]);
 
         if ($validator->fails()) {
@@ -87,12 +87,12 @@ class SubareaController extends Controller
         if ($request->has('name')) {
             $data['slug'] = Str::slug($request->name, '-');
         }
-        
-        $subarea->update($data);
+
+        $departament->update($data);
 
         return response()->json([
-            'message' => 'Subarea updated successfully',
-            'subarea' => $subarea
+            'message' => 'Departament updated successfully',
+            'departament' => $departament
         ], 200);
     }
 
@@ -101,33 +101,24 @@ class SubareaController extends Controller
      */
     public function destroy(string $id)
     {
-        $subarea = $this->findItem($id);
+        $departament = $this->findItem($id);
 
-        if (!$subarea) {
-            return response()->json(['message' => 'Subarea not found'], 404);
+        if (!$departament) {
+            return response()->json(['message' => 'Departament not found'], 404);
         }
 
-        $subarea->delete();
+        $departament->delete();
 
-        return response()->json(['message' => 'Subarea deleted successfully'], 200);
+        return response()->json(['message' => 'Departament deleted successfully'], 200);
     }
 
-
+    /**
+     * Helper method to find a Departament by ID or slug.
+     */
     private function findItem(string $identifier)
     {
-        $item = Subarea::where('id', $identifier)->orWhere('slug', $identifier)->first();
+        $item = Departament::where('id', $identifier)->orWhere('slug', $identifier)->first();
 
         return $item;
-    }
-
-    public function departaments(string $subarea)
-    {
-        $subarea = $this->findItem($subarea);
-
-        if (!$subarea) {
-            return response()->json(['message' => 'Subarea not found'], 404);
-        }
-
-        return response()->json($subarea->departaments, 200);
     }
 }
