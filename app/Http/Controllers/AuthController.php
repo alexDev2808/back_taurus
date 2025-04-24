@@ -49,9 +49,15 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id_empleado' => 'required|string|max:8|min:4|unique:users,id_empleado',
             'name' => 'required|string|max:100|min:2',
+            'app' => 'required|string|max:30',
+            'apm' => 'required|string|max:30',
             'password' => 'required|string|max:255|min:8',
             'email' => 'required|email|unique:users,email',
+            'isActive' => 'sometimes|boolean',
+            'rol' => 'sometimes|string|in:Admin,Colaborador',
+            'departament_id' => 'sometimes|uuid|exists:departaments,id',
         ], [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.min' => 'El nombre debe de tener al menos min caracteres.',
@@ -68,12 +74,18 @@ class AuthController extends Controller
         }
 
         $exists = User::where('email', htmlspecialchars($request->input('email')))->first();
+
         if (!$exists) {
             $new = User::create([
+                'id_empleado' => htmlspecialchars($request->input('id_empleado')),
                 'name' => htmlspecialchars($request->input('name')),
+                'app' => htmlspecialchars($request->input('app')),
+                'apm' => htmlspecialchars($request->input('apm')),
                 'email' => htmlspecialchars($request->input('email')),
                 'password' => Hash::make($request->input('password')),
-                'rol' => 'CLIENTE'
+                'isActive' => $request->input('isActive', true),
+                'departament_id' => $request->input('departament_id'),
+                'rol' => $request->input('rol', 'Colaborador'), 
             ]);
 
             if (!$new) {

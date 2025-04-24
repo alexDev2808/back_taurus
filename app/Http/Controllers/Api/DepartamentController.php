@@ -121,4 +121,17 @@ class DepartamentController extends Controller
 
         return $item;
     }
+
+
+    public function users(string $slug)
+    {
+        $departament = $this->findItem($slug);
+
+        if (!$departament) {
+            return response()->json(['message' => 'Departament not found'], 404);
+        }
+
+        return response()->json($departament->users, 200);
+    }
+
 }

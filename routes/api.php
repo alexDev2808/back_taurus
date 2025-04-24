@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('subareas', SubareaController::class);
         Route::get('subareas/{subarea}/departaments', [SubareaController::class, 'departaments']);
         Route::apiResource('departaments', DepartamentController::class);
+        Route::get('departaments/{departament}/users', [DepartamentController::class, 'users']);
     });
 
 

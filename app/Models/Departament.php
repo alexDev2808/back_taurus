@@ -22,4 +22,9 @@ class Departament extends Model
         return $this->belongsTo(Subarea::class);
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
 }
