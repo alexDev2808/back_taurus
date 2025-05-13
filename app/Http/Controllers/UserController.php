@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if ($user->rol == 'ADMIN') {
+        if ($user->rol == 'Admin') {
             $users = User::orderBy('name', 'asc')->get();
         }
 
